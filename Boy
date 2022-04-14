@@ -1,0 +1,94 @@
+<?php
+/*
+||----------------{Azisaf}------------------||
+
+•Ya : ~ @Web_design_uz
+•Ka : ~ @sabrgr
+•Co : ~ @coderlar
+
+||----------------{Azisaf}------------------||
+*/
+ob_start();
+$API = '5368382784:AAFMpDZ9GfwVDopnDb2r_SqS-i63ehd6GnI';
+define('API_KEY',$API);
+function bot($method,$datas=[]){
+    $url = "https://api.telegram.org/bot".API_KEY."/".$method;
+$ch = curl_init();
+curl_setopt($ch,CURLOPT_URL,$url);
+curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);
+curl_setopt($ch,CURLOPT_POSTFIELDS,$datas);
+$res = curl_exec($ch);
+if(curl_error($ch)){
+var_dump(curl_error($ch));
+}else{
+return json_decode($res);
+}}
+$update = json_decode(file_get_contents('php://input'));
+$message = $update->message;
+$from_id = $message->from->id;
+$chat_id = $message->chat->id;
+$text = $message->text;
+$name = $message->from->first_name;
+$Ch = "Sabrgr"; //  Kanalingiz Userini
+$join = file_get_contents("https://api.telegram.org/bot".API_KEY."/getChatMember?chat_id=@$Ch&user_id=".$from_id);
+
+if($message && (strpos($join,'"status":"left"') or strpos($join,'"Bad Request: USER_ID_INVALID"') or strpos($join,'"status":"kicked"'))!== false){
+bot('sendmessage',[
+'chat_id'=>$chat_id,
+    'text'=>"📛┇Kechirasiz do'stim  😿💔
+
+🔰┇Botdan foydalanish uchun Kanalimizga obuna bo'lishingiz kerak🌐💜
+
+📡┇Kanalimiz
+@$Ch
+
+🖲┇Obuna Bo'lgandan sung { /start } Buyurugini Bosing🎀💜" ,
+]);return false;}
+
+if($text == "/start"){
+bot('sendMessage',[
+ 'chat_id'=>$chat_id,
+ 'text'=>"• Xush kelibsiz; [$name](tg://user?id=$chat_id)
+
+-Botda sizning ismingizni qon bilan suratga yoziberadi, ✋🏼💚 '
+-Siz xohlagan ismingizni yoki nikingizni bizga yuboring, ♥ ️ '
+-Lotin tilida yuboring va bir oz kutib turing,
+-Lotin Yozuvida Yuboring Bot lotin tilida dasturlangan
+﹎﹎﹎﹎﹎﹎﹎﹎﹎﹎﹎﹎
+[💟Kanalimiz🌐](t.me/$Ch)",
+ 'parse_mode'=>"MarkDown",
+'disable_web_page_preview'=>'true',
+'reply_markup'=>json_encode([
+'inline_keyboard'=>[
+[['text'=>'✅Obuna Boling📢','url'=>"t.me/$Ch"]],
+]])]);}
+
+$Message = $update->message;
+$Dev = $Message->text;
+$ABoWatan = $Message->chat->id;
+$Name = $Message->from->first_name;
+if ($Dev != '/start'){
+if(preg_match('/([a-z])|([A-Z])/i',$Dev)){
+bot('sendMessage',[
+            'chat_id'=>$ABoWatan,
+'text'=>"-Surat Yaratilmoqda ... ✔️;
+-Bir oz kuting bir necha soniyadan so'ng tayor bo'ladi ...⏰",
+'reply_to_message_id'=>$Message->message_id,
+]);
+bot('sendphoto',[
+ 'chat_id'=>$ABoWatan, 
+
+'photo'=>"http://www.abowatan.ml/Blood/?Text=$Dev",
+'caption'=>"-Surat muvaffaqiyatli yaratildi✅
+🛠️Yaratuvchi: @Web_design_uz ",
+'reply_to_message_id'=>$Message->message_id,
+ ]);
+} else 
+bot('sendMessage',[
+    'chat_id'=>$ABoWatan,
+    'text'=>"-Kechirasiz $Name 
+
+-Bot dasturchisi faqat Lotin tilida yaratilgan 📛 !",
+'reply_to_message_id'=>$Message->message_id,
+  ]);
+  }
